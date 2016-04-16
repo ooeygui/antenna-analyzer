@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="Analyzer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Analyzer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:charting="using:WinRTXamlToolkit.Controls.DataVisualization.Charting" 
+    xmlns:Series="using:WinRTXamlToolkit.Controls.DataVisualization.Charting"
+    mc:Ignorable="d">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button x:Name="Band" Content="Band" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="Band_Click"/>
+            <Button x:Name="LowFre" Content="Low Freq" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="LowFre_Click"/>
+            <Button x:Name="HighFre" Content="High Freq" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="HighFre_Click"/>
+            <Button x:Name="Step" Content="Step" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="Step_Click"/>
+        </StackPanel>
+        <charting:Chart 
+            Grid.Row="1"
+            x:Name="FreqChart" 
+            Title="Frequency Chart">
+            <charting:Chart.LegendStyle>
+                <Style TargetType="FrameworkElement">
+                    <Setter Property="Width" Value="0" />
+                </Style>
+            </charting:Chart.LegendStyle>
+            <charting:Chart.TitleStyle>
+                <Style TargetType="FrameworkElement">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </charting:Chart.TitleStyle>
+
+            <charting:Chart.Series>
+                <charting:LineSeries
+                    Title="Frequency" 
+                    ItemsSource="{Binding Items}" 
+                    IndependentValueBinding="{Binding Name}" 
+                    DependentValueBinding="{Binding Value}" />
+            </charting:Chart.Series>
+        </charting:Chart>
+    </Grid>
+</Page>
