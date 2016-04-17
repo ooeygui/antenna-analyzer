@@ -15,9 +15,9 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button x:Name="Band" Content="Band" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="Band_Click"/>
-            <Button x:Name="LowFre" Content="Low Freq" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="LowFre_Click"/>
+            <!-- Button x:Name="LowFre" Content="Low Freq" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="LowFre_Click"/>
             <Button x:Name="HighFre" Content="High Freq" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="HighFre_Click"/>
-            <Button x:Name="Step" Content="Step" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="Step_Click"/>
+            <Button x:Name="Step" Content="Step" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Click="Step_Click"/ -->
         </StackPanel>
         <charting:Chart 
             Grid.Row="1"
