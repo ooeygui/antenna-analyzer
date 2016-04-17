@@ -61,8 +61,9 @@ namespace Analyzer
             { Band.W160, new FrequencyRange {lower = 1800, upper = 2000, step = 10 } },
         };
 
-        public async Task initialize()
+        public async Task initialize(AD9850DDS signalGen)
         {
+            _signalGenerator = signalGen;
             AdcProviderManager adcManager = new AdcProviderManager();
             adcManager.Providers.Add(new MCP3002());
 
@@ -74,18 +75,36 @@ namespace Analyzer
 
         public async Task<Analysis> analyze(Band band)
         {
+            Analysis analysis = new Analysis();
+
             ulong frequency = BandMap[band].lower;
 
-            while (frequency <= BandMap[band].upper)
+            bool done = false;
+            do
             {
+                if (frequency == BandMap[band].upper)
+                {
+                    done = true;
+                }
+
                 _signalGenerator.setFrequency(frequency);
 
+                await Task.Delay(250);
 
+                var trans = _adcGenerated.ReadValue();
+                var rec = _adcReflected.ReadValue();
 
-                await Task.Delay(5);
+                analysis.add(frequency, trans, rec);
+
+                frequency += BandMap[band].step;
+                if (frequency > BandMap[band].upper)
+                {
+                    frequency = BandMap[band].upper;
+                }
             }
+            while (!done);
 
-
+            return analysis;
         }
 
     }

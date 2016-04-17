@@ -10,6 +10,27 @@ namespace Analyzer
 {
     class Analysis
     {
+        public class Datapoint
+        {
+            public ulong frequency;
+            public int transmitted;
+            public int received;
 
+            public double swr
+            {
+                get
+                {
+                    return transmitted / (double)received;
+                }
+            }
+
+        };
+
+        public List<Datapoint> datapoints;
+
+        public void add(ulong freq, int tran, int rec)
+        {
+            datapoints.Add(new Datapoint() { frequency = freq, received = rec, transmitted = tran });
+        }
     }
 }
