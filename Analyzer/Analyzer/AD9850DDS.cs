@@ -42,7 +42,7 @@ namespace Analyzer
 
         public void setFrequency(double frequency, int phase = 0)
         {
-            _deltaPhase = (ulong)Math.Floor((frequency * 4294967296.0) / _calibrationFrequecy);
+            _deltaPhase = (ulong)Math.Floor(frequency * 4294967296.0 / _calibrationFrequecy);
 
             _phase = (byte)((phase << 3) & 0xFF);
 

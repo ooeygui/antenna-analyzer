@@ -20,13 +20,14 @@ namespace Analyzer
             {
                 get
                 {
-                    return transmitted / (double)received;
+                    double s = transmitted / (double)received;
+                    return s;
                 }
             }
 
         };
 
-        public List<Datapoint> datapoints;
+        public List<Datapoint> datapoints = new List<Datapoint>();
 
         public void add(ulong freq, int tran, int rec)
         {

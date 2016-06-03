@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Glovebox.IoT.Devices.Converters;
+//using Glovebox.IoT.Devices.Converters;
 using Windows.Devices.Adc;
 
 namespace Analyzer
@@ -47,14 +47,14 @@ namespace Analyzer
             { Band.W900, new FrequencyRange {lower = 902000000, upper = 928000000, step =  10000000} },
             { Band.W440, new FrequencyRange {lower = 420000000, upper = 450000000, step = 10000000 } },
             { Band.W222, new FrequencyRange {lower = 222000000, upper = 225000000, step = 10000000 } },
-            { Band.W2, new FrequencyRange {lower = 144000000, upper = 148000000, step = 10000000 } },
+            { Band.W2, new FrequencyRange {lower = 144000000, upper = 148000000, step = 1000000 } },
             { Band.W6, new FrequencyRange {lower = 50000000, upper = 54000000, step = 1000000 } },
             { Band.W10, new FrequencyRange {lower = 28000, upper = 29700, step = 100 } },
-            { Band.W12, new FrequencyRange {lower = 24890, upper = 24990, step = 100 } },
-            { Band.W15, new FrequencyRange {lower = 21000, upper = 21450, step = 100 } },
+            { Band.W12, new FrequencyRange {lower = 24890, upper = 24990, step = 10 } },
+            { Band.W15, new FrequencyRange {lower = 21000, upper = 21450, step = 10 } },
             { Band.W17, new FrequencyRange {lower = 18068, upper = 18168, step = 10} },
-            { Band.W20, new FrequencyRange {lower = 14000, upper = 14230, step = 1} },
-            { Band.W30, new FrequencyRange {lower = 10100, upper = 10150, step = 1 } },
+            { Band.W20, new FrequencyRange {lower = 14000, upper = 14230, step = 10} },
+            { Band.W30, new FrequencyRange {lower = 10100, upper = 10150, step = 10 } },
             { Band.W40, new FrequencyRange {lower = 7000, upper = 7300, step = 10} },
             { Band.W60, new FrequencyRange {lower = 5330, upper = 5403, step = 10 } },
             { Band.W80, new FrequencyRange {lower = 3500, upper = 4000, step = 10 } },
@@ -65,7 +65,10 @@ namespace Analyzer
         {
             _signalGenerator = signalGen;
             AdcProviderManager adcManager = new AdcProviderManager();
-            adcManager.Providers.Add(new MCP3002());
+            var mcp3002 = new MCP3002();
+            mcp3002.ChipSelectLine = 0;
+            await mcp3002.EnsureInitializedAsync();
+            adcManager.Providers.Add(mcp3002);
 
             IReadOnlyList<AdcController> adcControllers = await adcManager.GetControllersAsync();
 
@@ -79,10 +82,12 @@ namespace Analyzer
 
             ulong frequency = BandMap[band].lower;
 
+            uint count = 20;
+
             bool done = false;
             do
             {
-                if (frequency == BandMap[band].upper)
+                if (frequency == BandMap[band].upper || count-- == 0)
                 {
                     done = true;
                 }
@@ -90,13 +95,12 @@ namespace Analyzer
                 _signalGenerator.setFrequency(frequency);
 
                 await Task.Delay(250);
-
                 var trans = _adcGenerated.ReadValue();
+                await Task.Delay(100);
                 var rec = _adcReflected.ReadValue();
 
                 analysis.add(frequency, trans, rec);
-
-                frequency += BandMap[band].step;
+                //frequency += BandMap[band].step;
                 if (frequency > BandMap[band].upper)
                 {
                     frequency = BandMap[band].upper;

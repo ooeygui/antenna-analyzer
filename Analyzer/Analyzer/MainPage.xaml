@@ -22,22 +22,23 @@
         <charting:Chart 
             Grid.Row="1"
             x:Name="FreqChart" 
-            Title="Frequency Chart">
-            <charting:Chart.LegendStyle>
+            Title="Frequency Chart"
+            Margin="10,10,10,10">
+            <!-- charting:Chart.LegendStyle>
                 <Style TargetType="FrameworkElement">
                     <Setter Property="Width" Value="0" />
                 </Style>
-            </charting:Chart.LegendStyle>
+            </>
             <charting:Chart.TitleStyle>
                 <Style TargetType="FrameworkElement">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </Style>
-            </charting:Chart.TitleStyle>
+            </charting:Chart.TitleStyle -->
 
             <charting:Chart.Series>
                 <charting:LineSeries
+                    x:Name="LineSeries"
                     Title="Frequency" 
-                    ItemsSource="{Binding Items}" 
                     IndependentValueBinding="{Binding Name}" 
                     DependentValueBinding="{Binding Value}" />
             </charting:Chart.Series>
